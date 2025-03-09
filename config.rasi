@@ -1,7 +1,7 @@
 configuration {
 }
 * {
-    color1: rgba ( 43, 43, 43, 100 % );
+    color1: rgba ( 29, 32, 33, 100 % );
     color2: rgba ( 54, 54, 54, 100 % );
 
     selected-normal-foreground:  rgba ( 255, 255, 255, 100 % );
