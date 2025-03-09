@@ -1,0 +1,211 @@
+
+/** Customized by Rapteon; Date: 2019-01-04 **/
+
+/* ========== COLOR VARIABLES ========== */
+* {
+    /* Primary Colors */
+    background:                 rgba(0, 0, 0, 0%);
+    background-color:           rgba(255, 250, 250, 1);
+    foreground:                 rgba(45, 49, 66, 100%);
+    border-color:               var(lightfg);
+    text-color:                 var(foreground);
+    
+    /* Highlight Colors */
+    lightfg:                    rgba(45, 49, 66, 100%);
+    lightbg:                    rgba(176, 215, 255, 100%);
+    darkerBlue:                 rgba(50, 50, 100, 100%);
+    blue:                       rgba(173, 172, 181, 100%);
+    red:                        rgba(220, 50, 47, 100%);
+    blackText:                  rgba(0, 0, 0, 100%);
+
+    /* Text Colors */
+    normal-foreground:          var(foreground);
+    active-foreground:          var(lightfg);
+    selected-normal-foreground: var(lightfg);
+    selected-urgent-foreground: var(background);
+    selected-active-foreground: var(blackText);
+    alternate-normal-foreground: var(foreground);
+    alternate-urgent-foreground: var(red);
+
+    /* Background Colors */
+    normal-background:          var(background);
+    active-background:          var(background);
+    urgent-background:          var(background);
+    selected-normal-background: var(lightbg);
+    selected-urgent-background: var(red);
+    selected-active-background: var(darkerBlue);
+    alternate-normal-background: var(background);
+    alternate-urgent-background: var(lightbg);
+    alternate-active-background: var(darkerBlue);
+
+    /* Borders & UI */
+    separatorcolor:             var(foreground);
+    spacing:                    2;
+    font:                       "DejaVu Sans 12";
+}
+
+/* ========== WINDOW ========== */
+window {
+    padding:          1;
+    background-color: var(background);
+    border:           1;
+    border-radius:    12px;
+    fullscreen:       false;
+    transparency:     "screenshot";
+    width:            30%;
+}
+
+/* ========== MAIN BOX ========== */
+mainbox {
+    padding: 10;
+    border:  0;
+    border-radius: 10px;
+}
+
+/* ========== MESSAGE ========== */
+message {
+    padding:      2px 0px 0px;
+    border-color: var(separatorcolor);
+    border:       2px dash 0px 0px;
+    width:        30%;
+    font:         "monospace bold 10";
+}
+
+/* ========== TEXTBOX ========== */
+textbox {
+    text-color: var(foreground);
+    border-radius: 10px;
+    padding: 10px 10px 10px;
+}
+
+/* ========== LIST VIEW ========== */
+listview {
+    padding:      2px 0px 0px;
+    scrollbar:    false;
+    border-color: var(separatorcolor);
+    spacing:      2px;
+    fixed-height: 0;
+    border:       2px dash 0px 0px;
+    lines:        5;
+}
+
+/* ========== ELEMENT STYLES ========== */
+element {
+    padding: 1px;
+    border:  0;
+}
+
+/* Normal State */
+element normal.normal {
+    background-color: var(normal-background);
+    text-color:       var(normal-foreground);
+}
+
+element normal.urgent {
+    background-color: var(urgent-background);
+    text-color:       var(urgent-foreground);
+}
+
+element normal.active {
+    background-color: var(active-background);
+    text-color:       var(active-foreground);
+}
+
+/* Selected State */
+element selected.normal {
+    background-color: var(selected-normal-background);
+    text-color:       var(selected-normal-foreground);
+}
+
+element selected.urgent {
+    background-color: var(selected-urgent-background);
+    text-color:       var(selected-urgent-foreground);
+}
+
+element selected.active {
+    background-color: var(selected-active-background);
+    text-color:       var(selected-active-foreground);
+}
+
+/* Alternate State */
+element alternate.normal {
+    background-color: var(alternate-normal-background);
+    text-color:       var(alternate-normal-foreground);
+}
+
+element alternate.urgent {
+    background-color: var(alternate-urgent-background);
+    text-color:       var(alternate-urgent-foreground);
+}
+
+element alternate.active {
+    background-color: var(alternate-active-background);
+    text-color:       var(alternate-active-foreground);
+}
+
+/* ========== SCROLLBAR ========== */
+scrollbar {
+    width:        4px;
+    padding:      0;
+    handle-width: 8px;
+    border:       0;
+    handle-color: var(normal-foreground);
+}
+
+/* ========== MODE SWITCHER ========== */
+mode-switcher {
+    border-color: var(separatorcolor);
+    border:       2px dash 0px 0px;
+}
+
+/* ========== BUTTONS ========== */
+button {
+    spacing:    0;
+    text-color: var(normal-foreground);
+}
+
+button selected {
+    background-color: var(selected-normal-background);
+    text-color:       var(selected-normal-foreground);
+}
+
+/* ========== INPUT BAR ========== */
+inputbar {
+    padding:    1px;
+    spacing:    0px;
+    text-color: var(normal-foreground);
+    children:   [ prompt, textbox-prompt-colon, entry, overlay, case-indicator ];
+}
+
+/* ========== CASE INDICATOR ========== */
+case-indicator {
+    spacing:    0;
+    text-color: var(normal-foreground);
+}
+
+/* ========== ENTRY (TEXT INPUT) ========== */
+entry {
+    spacing:    0;
+    text-color: var(normal-foreground);
+}
+
+/* ========== PROMPT ========== */
+prompt {
+    spacing:    0;
+    text-color: var(normal-foreground);
+}
+
+/* Prompt Symbol */
+textbox-prompt-colon {
+    margin:     0px 0.3000em 0.0000em 0.0000em;
+    expand:     false;
+    str:        " > ";
+    text-color: inherit;
+}
+
+/* ========== ERROR MESSAGE ========== */
+error-message {
+    background-color: rgba(0, 0, 0, 0%);
+    text-color:       var(normal-foreground);
+}
+
