@@ -1,154 +1,187 @@
+
 configuration {
     disable-history: true;
 }
-* {
-    color1: rgba ( 29, 32, 33, 100 % );
-    color2: rgba ( 54, 54, 54, 100 % );
 
-    selected-normal-foreground:  rgba ( 255, 255, 255, 100 % );
-    foreground:                  rgba ( 193, 193, 193, 100 % );
-    normal-foreground:           @foreground;
+* {
+    color1: rgba(29, 32, 33, 1);
+    color2: rgba(54, 54, 54, 1);
+
+    selected-normal-foreground: rgba(255, 255, 255, 1);
+    foreground: rgba(193, 193, 193, 1);
+    normal-foreground: @foreground;
     alternate-normal-background: @color1;
-    red:                         rgba ( 220, 50, 47, 100 % );
-    selected-urgent-foreground:  rgba ( 255, 24, 68, 100 % );
-    blue:                        rgba ( 38, 139, 210, 100 % );
-    urgent-foreground:           rgba ( 255, 24, 68, 100 % );
+    red: rgba(220, 50, 47, 1);
+    selected-urgent-foreground: rgba(255, 24, 68, 1);
+    blue: rgba(38, 139, 210, 1);
+    urgent-foreground: rgba(255, 24, 68, 1);
     alternate-urgent-background: @color1;
-    active-foreground:           rgba ( 128, 203, 196, 100 % );
-    lightbg:                     rgba ( 238, 232, 213, 100 % );
-    selected-active-foreground:  rgba ( 128, 203, 196, 100 % );
+    active-foreground: rgba(128, 203, 196, 1);
+    lightbg: rgba(238, 232, 213, 1);
+    selected-active-foreground: rgba(128, 203, 196, 1);
     alternate-active-background: @color1;
-    background:                  @color1;
-    bordercolor:                 @color1;
+    background: rgba(29, 32, 33, 0.4); /* Semi-transparent background */
+    bordercolor: @color1;
     alternate-normal-foreground: @foreground;
-    normal-background:           @color1;
-    lightfg:                     rgba ( 88, 104, 117, 100 % );
-    selected-normal-background:  rgba ( 57, 66, 73, 100 % );
-    border-color:                @foreground;
-    spacing:                     2;
-    separatorcolor:              rgba ( 30, 37, 41, 100 % );
-    urgent-background:           @color1;
-    selected-urgent-background:  rgba ( 57, 66, 73, 100 % );
+    normal-background: @color1;
+    lightfg: rgba(88, 104, 117, 1);
+    selected-normal-background: rgba(57, 66, 73, 0.6); /* Slight transparency */
+    border-color: @foreground;
+    spacing: 2;
+    separatorcolor: rgba(30, 37, 41, 1)ckground: @color1;;
+    urgent-background: @color1;
+    selected-urgent-background: rgba(57, 66, 73, 0.6);
     alternate-urgent-foreground: @urgent-foreground;
-    background-color:            rgba ( 0, 0, 0, 0 % );
+    background-color: rgba(0, 0, 0, 0); /* Fully transparent background */
     alternate-active-foreground: @active-foreground;
-    active-background:           @color1;
-    selected-active-background:  rgba ( 57, 66, 73, 100 % );
+    active-background: @color1;
+    selected-active-background: rgba(57, 66, 73, 0.6);
 }
 
 window {
-    background-color: @background;
-    border:           1px;
-    border-radius:    5px;
-    border-color:     @color2;
-    padding:          5;
-    width:            30%;
+    background-color: rgba(29, 32, 33, 0.985); /* Frosted glass effect */
+    border: 1px;
+    border-radius: 5px;
+    border-color: @selected-active-background;
+    padding: 10;
+    width: 25%;
+    blur: 15px; /* Adds blur effect */
 }
+
 mainbox {
-    border:  0;
+    border: 0;
     padding: 0;
 }
+
 message {
-    border:       1px dash 0px 0px ;
+    border: 1px dash 0px 0px;
     border-color: @separatorcolor;
-    padding:      1px ;
+    padding: 1px;
 }
+
 textbox {
     text-color: @lightfg;
 }
+
 listview {
     fixed-height: 0;
-    border:       2px dash 0px 0px ;
+    border: 2px dash 0px 0px;
     border-color: @separatorcolor;
-    spacing:      2px ;
-    scrollbar:    true;
-    padding:      2px 0px 0px ;
+    spacing: 2px;
+    scrollbar: true;
+    padding: 2px 0px 0px;
     lines: 9;
 }
+
 element {
-    border:  0;
-    padding: 1px ;
+    border: 0;
+    padding: 1px;
+    background-color: rgba(29, 32, 33, 0.5); /* Transparent elements */
+    blur: 10px; /* More blur effect */
 }
+
 element-text {
     background-color: inherit;
-    text-color:       inherit;
+    text-color: inherit;
 }
+
 element.normal.normal {
     background-color: @normal-background;
-    text-color:       @normal-foreground;
+    text-color: @normal-foreground;
 }
+
 element.normal.urgent {
     background-color: @urgent-background;
-    text-color:       @urgent-foreground;
+    text-color: @urgent-foreground;
 }
+
 element.normal.active {
     background-color: @active-background;
-    text-color:       @active-foreground;
+    text-color: @active-foreground;
 }
+
 element.selected.normal {
     background-color: @selected-normal-background;
-    text-color:       @selected-normal-foreground;
+    text-color: @selected-normal-foreground;
 }
+
 element.selected.urgent {
     background-color: @selected-urgent-background;
-    text-color:       @selected-urgent-foreground;
+    text-color: @selected-urgent-foreground;
 }
+
 element.selected.active {
     background-color: @selected-active-background;
-    text-color:       @selected-active-foreground;
+    text-color: @selected-active-foreground;
 }
+
 element.alternate.normal {
     background-color: @alternate-normal-background;
-    text-color:       @alternate-normal-foreground;
+    text-color: @alternate-normal-foreground;
 }
+
 element.alternate.urgent {
     background-color: @alternate-urgent-background;
-    text-color:       @alternate-urgent-foreground;
+    text-color: @alternate-urgent-foreground;
 }
+
 element.alternate.active {
     background-color: @alternate-active-background;
-    text-color:       @alternate-active-foreground;
+    text-color: @alternate-active-foreground;
 }
+
 scrollbar {
-    width:        4px;
-    border:       0;
+    width: 4px;
+    border: 0;
     handle-width: 8px;
-    padding:      0;
+    padding: 0;
 }
+
 mode-switcher {
-    border:       2px dash 0px 0px ;
+    border: 2px dash 0px 0px;
     border-color: @separatorcolor;
 }
+
 button.selected {
     background-color: @selected-normal-background;
-    text-color:       @selected-normal-foreground;
+    text-color: @selected-normal-foreground;
 }
+
 inputbar {
-    spacing:    0;
+    spacing: 0;
     text-color: @normal-foreground;
-    padding:    1px ;
+    padding: 1px;
+    background-color: rgba(29, 32, 33, 0.5);
+    blur: 8px;
 }
+
 case-indicator {
-    spacing:    0;
+    spacing: 0;
     text-color: @normal-foreground;
 }
+
 entry {
-    spacing:    0;
+    spacing: 0;
     text-color: @normal-foreground;
 }
+
 prompt {
-    spacing:    0;
+    spacing: 0;
     text-color: @normal-foreground;
 }
+
 inputbar {
-    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+    children: [prompt, textbox-prompt-colon, entry, case-indicator];
 }
+
 textbox-prompt-colon {
-    expand:     false;
-    str:        " : ";
-    margin:     0px 0.3em 0em 0em ;
+    expand: false;
+    str: " : ";
+    margin: 0px 0.3em 0em 0em;
     text-color: @normal-foreground;
 }
+
 entry {
-    text-color: rgba(230, 230, 230, 1); /* Black text for readability */
+    text-color: rgba(230, 230, 230, 1); /* Better readability */
 }
+
