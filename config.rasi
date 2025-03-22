@@ -39,11 +39,11 @@ configuration {
 }
 
 window {
-    background-color: rgba(29, 32, 33, 0.985); /* Frosted glass effect */
+    background-color: rgba(29, 32, 33, 0.785); /* Frosted glass effect */
     border: 1px;
     border-radius: 5px;
     border-color: @color1;
-    padding: 10px;
+    padding: 3px;
     width: 25%;
     blur: 15px; /* Adds blur effect */
 }
