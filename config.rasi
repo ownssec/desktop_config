@@ -3,7 +3,7 @@ configuration {ckground: @color1;
     disable-history: true;
     modi: "drun,run";
     show: "drun";
-    matching: "normal";
+    matching: "fuzzy";
     case-sensitive: false;
     sort: true;
     drun-display-format: "{name}";
