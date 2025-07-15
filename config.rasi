@@ -11,7 +11,7 @@ configuration {
 
 * {
     color1: rgba(29, 32, 33, 1);
-    color2: rgba(54, 54, 54, 1);
+    color2: rgba(29, 32, 33, 0.35);
 
     selected-normal-foreground: rgba(255, 255, 255, 1);
     foreground: rgba(193, 193, 193, 1);
@@ -42,14 +42,19 @@ configuration {
     alternate-active-foreground: @active-foreground;
     active-background: @color1;
     selected-active-background: rgba(57, 66, 73, 0.6);
+
+    border-color: @color1;
+    separatorcolor: rgba(30, 37, 41, 0.4);
+    spacing: 5;
 }
 
 window {
     background-color: rgba(29, 32, 33, 0.785); /* Frosted glass effect */
     border: 1px;
-    border-radius: 5px;
-    border-color: @color1;
-    padding: 3px;
+    border-radius: 3px;
+    // border-color: @color1;
+    border-color: rgba(255, 255, 255, 0.1);
+    padding: 5px;
     width: 25%;
     blur: 15px; /* Adds blur effect */
 }
@@ -77,63 +82,6 @@ listview {
     scrollbar: true;
     padding: 2px 0px 0px;
     lines: 9;
-}
-
-element {
-    border: 0;
-    padding: 1px;
-    background-color: rgba(29, 32, 33, 0.5); /* Transparent elements */
-    blur: 10px; /* More blur effect */
-}
-
-element-text {
-    background-color: inherit;
-    text-color: inherit;
-}
-
-element.normal.normal {
-    background-color: @normal-background;
-    text-color: @normal-foreground;
-}
-
-element.normal.urgent {
-    background-color: @urgent-background;
-    text-color: @urgent-foreground;
-}
-
-element.normal.active {
-    background-color: @active-background;
-    text-color: @active-foreground;
-}
-
-element.selected.normal {
-    background-color: @selected-normal-background;
-    text-color: @selected-normal-foreground;
-}
-
-element.selected.urgent {
-    background-color: @selected-urgent-background;
-    text-color: @selected-urgent-foreground;
-}
-
-element.selected.active {
-    background-color: @selected-active-background;
-    text-color: @selected-active-foreground;
-}
-
-element.alternate.normal {
-    background-color: @alternate-normal-background;
-    text-color: @alternate-normal-foreground;
-}
-
-element.alternate.urgent {
-    background-color: @alternate-urgent-background;
-    text-color: @alternate-urgent-foreground;
-}
-
-element.alternate.active {
-    background-color: @alternate-active-background;
-    text-color: @alternate-active-foreground;
 }
 
 scrollbar {
@@ -191,3 +139,29 @@ entry {
     text-color: rgba(230, 230, 230, 1); /* Better readability */
 }
 
+/* Base style for all elements */
+element,
+element.normal.normal,
+element.normal.urgent,
+element.normal.active,
+element.alternate.normal,
+element.alternate.urgent,
+element.alternate.active {
+    background-color: @background;
+    text-color: @foreground;
+    blur: 8px;
+    padding: 3px;
+    border: 1px;
+    // border-color: rgba(219, 215, 215, 0.15); /* subtle border for non-selected */
+}
+
+/* Style for selected item only */
+element.selected.normal,
+element.selected.urgent,
+element.selected.active {
+    background-color: rgba(255, 255, 255, 0.08); /* light glow effect */
+    text-color: @selected-normal-foreground;
+    border: 2px;
+    border-color: rgba(255, 255, 255, 0.1); /* brighter border for selected */
+    border-radius: 4px;
+}
