@@ -1,5 +1,5 @@
-
-configuration {ckground: @color1;
+configuration {
+    background: @color1;
     disable-history: true;
     modi: "drun,run";
     show: "drun";
