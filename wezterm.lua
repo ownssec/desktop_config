@@ -1,8 +1,13 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
--- Use JetBrainsMono Nerd Font
-config.font = wezterm.font("JetBrainsMono Nerd Font", { weight = "Regular", style = "Normal" })
+-- Use JetBrainsMono Nerd Font with fallbacks
+config.font = wezterm.font_with_fallback({
+	{ family = "JetBrainsMono Nerd Font", weight = "Regular", style = "Normal" },
+	"Symbols Nerd Font Mono", -- extra glyph coverage
+	"Noto Color Emoji", -- emoji support
+})
+
 config.font_size = 10.5
 
 -- Transparency
@@ -14,7 +19,9 @@ config.color_scheme = "Catch Me If You Can (terminal.sexy)"
 config.enable_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = true
 
-return config
+-- Disable missing glyph warnings
+config.warn_about_missing_glyphs = false
 
+return config
 --  https://ownssec:REDACTEDi7fPpiDIY34yRElUxFVkofHSWvdZqU0srKL2@github.com/ownssec/wezterm.git
 --  https://ownssec:REDACTEDi7fPpiDIY34yRElUxFVkofHSWvdZqU0srKL2@github.com/ownssec/picom.git
