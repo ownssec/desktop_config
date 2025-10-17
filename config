@@ -86,8 +86,6 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 client.focused          #4c7899 #285577 #ffffff #2e9ef4 #2e9ef4
 client.focused_inactive #333333 #222222 #888888 #555555 #555555
 
-# Borders 3px
-for_window [class=".*"] border pixel 1
 
 # Window border colors
 client.focused          #1d2021 #e3e5e6 #c8cecf #e3e5e6 #e3e5e6   # light border when focused
@@ -174,3 +172,15 @@ gaps right 11
 
 # Optional: only apply outer gaps when more than one window is present
 smart_gaps false
+
+# remove auto lock
+exec --no-startup-id xset s off -dpms
+
+# Borders 3px
+for_window [class=".*"] border pixel 1
+
+# Adapta-like colors
+set $bg      #263238
+set $inactive #37474F
+set $text    #ECEFF1
+set $accent  #00BCD4
