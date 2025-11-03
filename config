@@ -167,9 +167,9 @@ gaps inner 5
 # gaps outer 6
 
 gaps top 7
-gaps bottom 11
-gaps left 11
-gaps right 11
+gaps bottom 8
+gaps left 8
+gaps right 8
 
 # Optional: only apply outer gaps when more than one window is present
 smart_gaps false
