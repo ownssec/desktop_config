@@ -1,75 +1,136 @@
 -- bufferlist.lua
--- Store the current list of buffers with order
-local buffer_map = {}
-local buffer_keys_active = false
+-- Floating buffer list with numeric selection (1–9), top padding, and gray border
 
--- Unmap number keys 1–9 and clean up temporary mappings
-local function deactivate_buffer_keys()
-	for i = 1, 9 do
-		pcall(vim.keymap.del, "n", tostring(i))
+local buffer_order = {}
+local float_win = nil
+local float_buf = nil
+
+-- Helper: check if a value exists in a table
+local function contains(tbl, val)
+	for _, v in ipairs(tbl) do
+		if v == val then
+			return true
+		end
 	end
-
-	-- Clean up temporary mappings
-	pcall(vim.keymap.del, "n", "<Esc>")
-	pcall(vim.keymap.del, "n", "<CR>")
-
-	buffer_keys_active = false
+	return false
 end
 
--- Map number keys 1–9 to switch buffers
-local function activate_buffer_keys()
-	if buffer_keys_active then
-		return
+-- Helper: close floating window safely
+local function close_float()
+	if float_win and vim.api.nvim_win_is_valid(float_win) then
+		vim.api.nvim_win_close(float_win, true)
 	end
+	float_win = nil
+	float_buf = nil
+end
 
-	-- First clean up any existing mappings
-	deactivate_buffer_keys()
+-- Helper: create keymaps inside the floating buffer
+local function set_buffer_keymaps(buf)
+	local opts = { noremap = true, silent = true, buffer = buf }
 
-	-- Set up number key mappings
+	-- Number keys 1–9 to switch buffers
 	for i = 1, 9 do
 		vim.keymap.set("n", tostring(i), function()
-			local buffers = vim.fn.getbufinfo({ buflisted = 1 })
-			local bufnr = buffers[i] and buffers[i].bufnr
+			local bufnr = buffer_order[i]
 			if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+				close_float()
 				vim.api.nvim_set_current_buf(bufnr)
 			else
-				vim.cmd("echo 'Invalid buffer number'")
+				vim.notify("Invalid buffer number", vim.log.levels.WARN)
 			end
-			deactivate_buffer_keys()
-		end, { noremap = true, silent = true, desc = "Switch to buffer " .. i })
+		end, opts)
 	end
 
-	-- Set up temporary mappings for Escape and Enter
-	vim.keymap.set("n", "<Esc>", function()
-		deactivate_buffer_keys()
-		vim.cmd("echo ''") -- Clear any echo messages
-	end, { noremap = true, silent = true, desc = "Deactivate buffer keys" })
-
-	vim.keymap.set("n", "<CR>", function()
-		deactivate_buffer_keys()
-		vim.cmd("echo ''") -- Clear any echo messages
-	end, { noremap = true, silent = true, desc = "Deactivate buffer keys" })
-
-	buffer_keys_active = true
+	-- ESC or <CR> to close window
+	vim.keymap.set("n", "<Esc>", close_float, opts)
+	vim.keymap.set("n", "<CR>", close_float, opts)
 end
 
--- Define the highlight group
-local dashes = string.rep("-", 50)
+-- Create floating window in the center
+local function open_floating_window(lines)
+	local width = 70
+	local height = math.min(#lines + 2, 20)
+	local ui = vim.api.nvim_list_uis()[1]
+	local row = math.floor((ui.height - height) / 2)
+	local col = math.floor((ui.width - width) / 2)
+
+	-- Create scratch buffer
+	float_buf = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_buf_set_lines(float_buf, 0, -1, false, lines)
+
+	-- Create custom highlight group for gray border
+	vim.api.nvim_set_hl(0, "BufferListBorder", { fg = "#808080", bg = "NONE" }) -- gray border
+	vim.api.nvim_set_hl(0, "BufferListNormal", { bg = "NONE" }) -- transparent bg
+
+	-- Open floating window with custom highlights
+	local opts = {
+		style = "minimal",
+		relative = "editor",
+		width = width,
+		height = height,
+		row = row,
+		col = col,
+		border = "rounded",
+		title = "",
+		title_pos = "center",
+		noautocmd = true,
+	}
+
+	float_win = vim.api.nvim_open_win(float_buf, true, opts)
+
+	-- Apply window highlights
+	vim.api.nvim_win_set_hl_ns(float_win, 0)
+	vim.api.nvim_win_set_option(float_win, "winhighlight", "Normal:BufferListNormal,FloatBorder:BufferListBorder")
+
+	-- Buffer options
+	vim.api.nvim_set_option_value("modifiable", false, { buf = float_buf })
+	vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = float_buf })
+	vim.api.nvim_set_option_value("filetype", "bufferlist", { buf = float_buf })
+
+	set_buffer_keymaps(float_buf)
+end
 
 -- Command to show numbered buffer list
-vim.api.nvim_create_user_command("Buffer", function(opts)
-	buffer_map = {}
-	local buffers = vim.fn.getbufinfo({ buflisted = 1 })
-
-	if #buffers == 0 then
-		print("No open buffers.")
+vim.api.nvim_create_user_command("Buffer", function()
+	-- Toggle off if already open
+	if float_win and vim.api.nvim_win_is_valid(float_win) then
+		close_float()
 		return
 	end
 
-	-- Collect all lines first
+	local buffers = vim.fn.getbufinfo({ buflisted = 1 })
+
+	-- Add new buffers to order
+	for _, buf in ipairs(buffers) do
+		if not contains(buffer_order, buf.bufnr) then
+			table.insert(buffer_order, buf.bufnr)
+		end
+	end
+
+	-- Remove closed buffers
+	local valid_bufs = {}
+	for _, buf in ipairs(buffers) do
+		valid_bufs[buf.bufnr] = true
+	end
+	local new_order = {}
+	for _, bufnr in ipairs(buffer_order) do
+		if valid_bufs[bufnr] then
+			table.insert(new_order, bufnr)
+		end
+	end
+	buffer_order = new_order
+
+	if #buffer_order == 0 then
+		vim.notify("No open buffers", vim.log.levels.INFO)
+		return
+	end
+
+	-- Collect display lines
 	local lines = {}
-	for i, buf in ipairs(buffers) do
-		local fullpath = buf.name ~= "" and vim.fn.fnamemodify(buf.name, ":p") or nil
+	table.insert(lines, "") -- Padding line at top
+	for i, bufnr in ipairs(buffer_order) do
+		local bufinfo = vim.fn.getbufinfo(bufnr)[1]
+		local fullpath = bufinfo.name ~= "" and vim.fn.fnamemodify(bufinfo.name, ":p") or nil
 		local display_path
 
 		if fullpath then
@@ -81,37 +142,20 @@ vim.api.nvim_create_user_command("Buffer", function(opts)
 			display_path = "[No Name]"
 		end
 
-		local formatted = string.format("~ %2d | %-60s", i, display_path)
+		local formatted = string.format("%2d | %-60s", i, display_path)
 		table.insert(lines, formatted)
-		buffer_map[tostring(i)] = buf.bufnr
 	end
 
-	-- Add an empty line at the end
-	table.insert(lines, "")
+	open_floating_window(lines)
+end, { range = false })
 
-	-- Display all lines at once using echo
-	vim.api.nvim_echo({ { table.concat(lines, "\n") } }, false, {})
+-- Show buffer list with <C-i> (toggle)
+vim.keymap.set("n", "<C-i>", ":Buffer<CR>", { noremap = true, silent = true, desc = "Toggle buffer list" })
 
-	local dashes = string.rep("-", 10)
-
-	-- design dashes
-	vim.api.nvim_echo({
-		-- { dashes, "Normal" },
-		-- { "\n" },
-		{ "" },
-	}, false, {})
-
-	activate_buffer_keys()
-end, { range = false }) -- Explicitly disable range for this command
-
--- Show buffer list with <C-i>
-vim.keymap.set("n", "<C-i>", ":Buffer<CR>", { noremap = true, silent = true, desc = "Show buffer list" })
-
--- Delete all buffers except the current one
+-- Delete all buffers except current
 vim.keymap.set("n", "[ct", function()
 	local current = vim.api.nvim_get_current_buf()
 	local buffers = vim.api.nvim_list_bufs()
-
 	for _, buf in ipairs(buffers) do
 		if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_option(buf, "buflisted") then
 			if buf ~= current then
@@ -119,4 +163,5 @@ vim.keymap.set("n", "[ct", function()
 			end
 		end
 	end
+	buffer_order = { current }
 end, { desc = "Delete all buffers except current" })
