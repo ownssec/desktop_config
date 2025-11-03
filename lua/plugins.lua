@@ -187,7 +187,7 @@ return require("packer").startup(function(use)
 
 	use({
 		"mistweaverco/kulala.nvim",
-         config = function()
+		config = function()
 			require("config.kulala")
 		end,
 	})
@@ -220,9 +220,21 @@ return require("packer").startup(function(use)
 
 	--fuzzy finder and mini picker
 	use({
-		"echasnovski/mini.nvim",
+		"nvim-telescope/telescope.nvim",
+		tag = "0.1.6",
+		requires = { { "nvim-lua/plenary.nvim" } },
 		config = function()
-			require("config.mini")
+			require("config.telescope")
 		end,
 	})
+
+	-- ai suggestion
+	use("MunifTanjim/nui.nvim")
+	use("MeanderingProgrammer/render-markdown.nvim")
+
+	-- Optional dependencies
+	use("HakonHarnes/img-clip.nvim")
+	use("zbirenbaum/copilot.lua")
+	use("stevearc/dressing.nvim") -- for enhanced input UI
+	use("folke/snacks.nvim") -- for modern input UI
 end)
