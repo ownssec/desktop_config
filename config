@@ -173,13 +173,13 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 
 # Set gaps
-gaps inner 5
+gaps inner 6
 # gaps outer 6
 
-gaps top 7
-gaps bottom 8
-gaps left 8
-gaps right 8
+gaps top 1
+gaps bottom 6
+gaps left 6
+gaps right 6
 
 # Optional: only apply outer gaps when more than one window is present
 smart_gaps false
