@@ -87,13 +87,23 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 client.focused          #4c7899 #285577 #ffffff #2e9ef4 #2e9ef4
 client.focused_inactive #333333 #222222 #888888 #555555 #555555
 
+# # Window border colors
+# client.focused          #1d2021 #e3e5e6 #c8cecf #e3e5e6 #e3e5e6   # light border when focused
+# client.unfocused        #3c3836 #283b3a #c8cecf #283b3a #283b3a   # dark teal border when unfocused
+# client.focused_inactive #3c3836 #283b3a #c8cecf #283b3a #283b3a   # same as unfocused
+# client.urgent           #cc241d #cc241d #c8cecf #cc241d #fb4934   # red border for urgent
+# client.placeholder      #1d2021 #283b3a #000000 #283b3a #283b3a   # muted teal border for placeholder
 
-# Window border colors
-client.focused          #1d2021 #e3e5e6 #c8cecf #e3e5e6 #e3e5e6   # light border when focused
-client.unfocused        #3c3836 #283b3a #c8cecf #283b3a #283b3a   # dark teal border when unfocused
-client.focused_inactive #3c3836 #283b3a #c8cecf #283b3a #283b3a   # same as unfocused
-client.urgent           #cc241d #cc241d #c8cecf #cc241d #fb4934   # red border for urgent
-client.placeholder      #1d2021 #283b3a #000000 #283b3a #283b3a   # muted teal border for placeholder
+# Window border colors (eye-friendly dark green)
+client.focused          #3E6259 #3E6259 #e3e5e6 #3E6259 #3E6259   # focused window border
+client.unfocused        #3c3836 #2A3F38 #c8cecf #2A3F38 #2A3F38   # muted, darker unfocused border
+client.focused_inactive #3c3836 #2A3F38 #c8cecf #2A3F38 #2A3F38   # same as unfocused
+client.urgent           #cc241d #cc241d #c8cecf #cc241d #fb4934   # red for urgent
+client.placeholder      #1d2021 #2A3F38 #000000 #2A3F38 #2A3F38   # soft dark placeholder border
+
+
+# Borders 3px
+for_window [class=".*"] border pixel 3
 
 bindsym Control+$mod+equal exec flameshot gui
 
@@ -177,8 +187,6 @@ smart_gaps false
 # remove auto lock
 exec --no-startup-id xset s off -dpms
 
-# Borders 3px
-for_window [class=".*"] border pixel 1
 
 # Adapta-like colors
 set $bg      #263238
