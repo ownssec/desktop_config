@@ -119,7 +119,7 @@ bindsym Control+$mod+equal exec flameshot gui
 # bindsym Control+$Mod+n exec --no-startup-id ~/.config/i3/next-workspace.sh
 
 #wallpaper
-exec_always --no-startup-id feh --bg-scale ~/Pictures/wpMain.jpg
+exec_always --no-startup-id feh --bg-scale ~/Pictures/wpMain2.jpg
 
 #move the container to right or left
 bindsym Control+$mod+Shift+h move left
@@ -176,10 +176,10 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 gaps inner 6
 # gaps outer 6
 
-gaps top 1
-gaps bottom 6
-gaps left 6
-gaps right 6
+gaps top 4
+gaps bottom 4
+gaps left 4
+gaps right 4
 
 # Optional: only apply outer gaps when more than one window is present
 smart_gaps false
