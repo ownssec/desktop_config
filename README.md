@@ -12,3 +12,6 @@ for work and for daily use
 ***the content of the repo***
 ***i3wm, polybar, start_config, picom, wezterm, rofi
 ***neovim config (not necessary)
+
+***added ruleset***
+***branch will not be deleted for all the existing branch for this repo
