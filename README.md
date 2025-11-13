@@ -5,13 +5,13 @@ for work and for daily use
 ---------- INPIRED BY ------
 ----------------------------
  
---- i just need a fast way to navigate things and back then i have a
---- laptop with low specifications and my current os saved my laptop
---- and this applications that is present in the branches.
---- currently im using this everyday and im enjoying the customization of it.
---- im enjoying and exploring some staff that related to web and the config i have.
---- im not knowledgeable for some of it but i know some of the basics on
---- how to start working on it. for specific configuration i use AI for it.
+- i just need a fast way to navigate things and back then i have a
+- laptop with low specifications and my current os saved my laptop
+- and this applications that is present in the branches.
+- currently im using this everyday and im enjoying the customization of it.
+- im enjoying and exploring some staff that related to web and the config i have.
+- im not knowledgeable for some of it but i know some of the basics on
+- how to start working on it. for specific configuration i use AI for it.
 
 
 ---------------------------
