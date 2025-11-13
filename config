@@ -193,3 +193,11 @@ set $bg      #263238
 set $inactive #37474F
 set $text    #ECEFF1
 set $accent  #00BCD4
+
+# desktop widget
+exec_always --no-startup-id conky
+
+# disable screen saver or inactive issue
+exec --no-startup-id xset -dpms
+exec --no-startup-id xset s off
+exec --no-startup-id xset s noblank
