@@ -10,7 +10,7 @@ for work and for daily use
 ***that is created to this repo.
 
 ***the content of the repo***
-***i3wm, polybar, start_config, picom, wezterm, rofi
+***i3wm, polybar, start_config, wezterm, rofi
 ***neovim config (not necessary)
 
 ***added ruleset***
