@@ -1,6 +1,16 @@
 # desktop_config
 for work and for daily use
 
+----------------------------
+---------- INPIRED BY ------
+----------------------------
+ 
+--- 
+
+---------------------------
+---------- NOTE -----------
+---------------------------
+
 !!!IMPORTANT
 - not for producton
 - personal use only.
