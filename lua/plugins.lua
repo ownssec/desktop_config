@@ -218,7 +218,14 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	--fuzzy finder and mini picker
+	--fuzzy finder
+	-- use({
+	-- 	"echasnovski/mini.nvim",
+	-- 	config = function()
+	-- 		require("config.mini")
+	-- 	end,
+	-- })
+
 	use({
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.6",

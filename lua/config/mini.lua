@@ -1,6 +1,8 @@
 -- lua/configs/mini.lua
 
-require("mini.pick").setup({
+local pick = require("mini.pick")
+
+pick.setup({
 	delay = {
 		async = 10,
 		busy = 50,
@@ -9,37 +11,28 @@ require("mini.pick").setup({
 	mappings = {
 		caret_left = "<Left>",
 		caret_right = "<Right>",
-
 		choose = "<CR>",
 		choose_in_split = "<C-s>",
 		choose_in_tabpage = "<C-t>",
 		choose_in_vsplit = "<C-v>",
 		choose_marked = "<M-CR>",
-
 		delete_char = "<BS>",
 		delete_char_right = "<Del>",
 		delete_left = "<C-u>",
 		delete_word = "<C-w>",
-
 		mark = "<C-x>",
 		mark_all = "<C-a>",
-
 		move_down = "<C-n>",
 		move_start = "<C-g>",
 		move_up = "<C-p>",
-
 		paste = "<C-r>",
-
 		refine = "<C-Space>",
 		refine_marked = "<M-Space>",
-
 		scroll_down = "<C-f>",
 		scroll_left = "<C-h>",
 		scroll_right = "<C-l>",
 		scroll_up = "<C-b>",
-
 		stop = "<Esc>",
-
 		toggle_info = "<S-Tab>",
 		toggle_preview = "<Tab>",
 	},
@@ -49,35 +42,116 @@ require("mini.pick").setup({
 		use_cache = false,
 	},
 
-	source = {
-		items = nil,
-		name = nil,
-		cwd = nil,
-
-		match = nil,
-		show = nil,
-		preview = nil,
-
-		choose = nil,
-		choose_marked = nil,
-	},
-
 	window = {
 		prompt_caret = "▏",
-
 		prompt_prefix = "> ",
 
-		config = {
-			width = 250,
-			height = 20,
-			border = "none",
-			row = vim.o.lines - 0,
-		},
-		winhl = "FloatBorder:NormalFloat",
+		-- ONLY official documented fields
+		config = function()
+			local width = math.floor(vim.o.columns * 0.6)
+			local height = math.floor(vim.o.lines * 0.5)
+
+			return {
+				relative = "editor",
+				border = "rounded",
+				width = width,
+				height = height,
+				-- center using documented method: manually compute row/col
+				row = math.floor((vim.o.lines - height) / 2),
+				col = math.floor((vim.o.columns - width) / 2),
+			}
+		end,
+
+		winhl = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
 		winblend = 0,
-		prompt = { anchor = "SW", row = vim.o.lines - 3 },
+
+		prompt = {
+			-- documented keys: row, col, height, width, border, anchor
+			anchor = "NW",
+			row = 1,
+			col = 2,
+		},
 	},
 })
+
+-- require("mini.pick").setup({
+-- 	delay = {
+-- 		async = 10,
+-- 		busy = 50,
+-- 	},
+--
+-- 	mappings = {
+-- 		caret_left = "<Left>",
+-- 		caret_right = "<Right>",
+--
+-- 		choose = "<CR>",
+-- 		choose_in_split = "<C-s>",
+-- 		choose_in_tabpage = "<C-t>",
+-- 		choose_in_vsplit = "<C-v>",
+-- 		choose_marked = "<M-CR>",
+--
+-- 		delete_char = "<BS>",
+-- 		delete_char_right = "<Del>",
+-- 		delete_left = "<C-u>",
+-- 		delete_word = "<C-w>",
+--
+-- 		mark = "<C-x>",
+-- 		mark_all = "<C-a>",
+--
+-- 		move_down = "<C-n>",
+-- 		move_start = "<C-g>",
+-- 		move_up = "<C-p>",
+--
+-- 		paste = "<C-r>",
+--
+-- 		refine = "<C-Space>",
+-- 		refine_marked = "<M-Space>",
+--
+-- 		scroll_down = "<C-f>",
+-- 		scroll_left = "<C-h>",
+-- 		scroll_right = "<C-l>",
+-- 		scroll_up = "<C-b>",
+--
+-- 		stop = "<Esc>",
+--
+-- 		toggle_info = "<S-Tab>",
+-- 		toggle_preview = "<Tab>",
+-- 	},
+--
+-- 	options = {
+-- 		content_from_bottom = false,
+-- 		use_cache = false,
+-- 	},
+--
+-- 	source = {
+-- 		items = nil,
+-- 		name = nil,
+-- 		cwd = nil,
+--
+-- 		match = nil,
+-- 		show = nil,
+-- 		preview = nil,
+--
+-- 		choose = nil,
+-- 		choose_marked = nil,
+-- 	},
+--
+-- 	window = {
+-- 		prompt_caret = "▏",
+--
+-- 		prompt_prefix = "> ",
+--
+-- 		config = {
+-- 			width = 250,
+-- 			height = 20,
+-- 			border = "none",
+-- 			row = vim.o.lines - 0,
+-- 		},
+-- 		winhl = "FloatBorder:NormalFloat",
+-- 		winblend = 0,
+-- 		prompt = { anchor = "SW", row = vim.o.lines - 3 },
+-- 	},
+-- })
 
 require("mini.indentscope").setup({
 	draw = {
