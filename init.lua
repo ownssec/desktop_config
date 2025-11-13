@@ -7,6 +7,7 @@ require("keymap")
 -- custom functions
 require("config.customBufferLists")
 -- require("config.customLiveGrep")
+-- require("config.customLiveGrep")
 
 local bgColor = "#191616"
 
