@@ -23,5 +23,3 @@ config.hide_tab_bar_if_only_one_tab = true
 config.warn_about_missing_glyphs = false
 
 return config
---  https://ownssec:REDACTEDi7fPpiDIY34yRElUxFVkofHSWvdZqU0srKL2@github.com/ownssec/wezterm.git
---  https://ownssec:REDACTEDi7fPpiDIY34yRElUxFVkofHSWvdZqU0srKL2@github.com/ownssec/picom.git
