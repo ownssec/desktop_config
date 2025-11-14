@@ -15,7 +15,7 @@
 LAPTOP_MANUAL_RATE="48"
 
 # -----------------------------
-# 1. Detect internal laptop display (eDP-X)
+# 1. Detect internal laptop display (eDP-X) 
 # -----------------------------
 INTERNAL=$(xrandr | grep " connected" | grep -oP '^eDP-[0-9]+')
 if [ -z "$INTERNAL" ]; then
