@@ -1,5 +1,5 @@
 # desktop_config
-for work and for daily use
+# for work and for daily use
 
 ----------------------------
 ---------- INPIRED BY ------
@@ -36,3 +36,8 @@ for work and for daily use
 
 ***added ruleset***
 ***branch will not be deleted for all the existing branch for this repo
+
+
+
+<img width="1920" height="1079" alt="image" src="https://github.com/user-attachments/assets/d0ff6b3c-b9fa-481c-ab83-6f89541b3090" />
+
