@@ -17,8 +17,8 @@ telescope.setup({
 		layout_config = {
 			horizontal = {
 				preview_width = 0.7,
-				width = 0.85,
-				height = 0.85,
+				width = 0.5,
+				height = 0.5,
 			},
 			preview_cutoff = 0,
 		},
@@ -74,24 +74,25 @@ pcall(telescope.load_extension, "file_browser")
 -- CTRL + O → live grep with preview above
 vim.keymap.set("n", "<C-o>", function()
 	builtin.live_grep({
-		winblend = 10,
+		winblend = 0,
+
 		layout_strategy = "vertical",
 		layout_config = {
 			vertical = {
-				width = 0.3,
-				height = 0.8,
-				anchor = "center",
+				width = 0.4, -- 50% of screen width
+				height = 0.55, -- 70% of screen height
+				anchor = "N", -- << THIS centers the window on screen
+
 				prompt_position = "top",
-				preview_height = 0.28,
+				preview_height = 0.55, -- smaller preview
 			},
 		},
+
 		sorting_strategy = "ascending",
 		results_title = "",
 		preview_title = "",
-		path_display = { "absolute" }, -- only file paths
+		path_display = { "absolute" },
 
-		-- highlight selection
 		selection_caret = "➤ ",
-		-- winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
 	})
 end, { noremap = true, silent = true })

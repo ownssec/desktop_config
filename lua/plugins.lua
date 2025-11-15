@@ -221,60 +221,13 @@ return require("packer").startup(function(use)
 	--fuzzy finder
 
 	use({
-		"folke/snacks.nvim",
-		setup = function()
-			vim.g.snacks_no_setup = true
-		end,
+		"nvim-telescope/telescope.nvim",
+		tag = "0.1.6",
+		requires = { { "nvim-lua/plenary.nvim" } },
 		config = function()
-			require("snacks").setup({
-				picker = {
-					--- GLOBAL picker config
-					layout = {
-						preset = "vertical", -- vertical layout for all pickers
-						preview = "top", -- preview ABOVE the results
-						preview_size = 0.35, -- 35% height
-					},
-
-					--- PER-SOURCE SETTINGS
-					sources = {
-						grep = {
-							live = true,
-
-							-- OPTIONAL: override layout inside grep only
-							layout = {
-								preset = "vertical",
-								preview = "top",
-								preview_size = 0.35,
-							},
-						},
-					},
-				},
-			})
-
-			-- CTRL + O → open Snacks GREP
-			vim.keymap.set("n", "<C-o>", function()
-				require("snacks").picker.grep()
-			end, {
-				desc = "Open Snacks Grep Picker",
-			})
+			require("config.telescope")
 		end,
 	})
-
-	-- use({
-	-- 	"echasnovski/mini.nvim",
-	-- 	config = function()
-	-- 		require("config.mini")
-	-- 	end,
-	-- })
-
-	-- use({
-	-- 	"nvim-telescope/telescope.nvim",
-	-- 	tag = "0.1.6",
-	-- 	requires = { { "nvim-lua/plenary.nvim" } },
-	-- 	config = function()
-	-- 		require("config.telescope")
-	-- 	end,
-	-- })
 
 	-- ai suggestion
 	use("MunifTanjim/nui.nvim")
