@@ -1,36 +1,35 @@
 local telescope = require("telescope")
 local builtin = require("telescope.builtin")
 local actions = require("telescope.actions")
-local themes = require("telescope.themes")
 
--- Setup
 telescope.setup({
 	defaults = {
 		mappings = {
 			i = {
-				["<C-d>"] = actions.delete_buffer + actions.move_to_top, -- in insert mode
+				["<C-d>"] = actions.delete_buffer + actions.move_to_top,
 			},
 			n = {
-				["<C-d>"] = actions.delete_buffer + actions.move_to_top, -- in normal mode
+				["<C-d>"] = actions.delete_buffer + actions.move_to_top,
 			},
 		},
+
 		layout_strategy = "horizontal",
 		layout_config = {
 			horizontal = {
 				preview_width = 0.7,
 				width = 0.85,
 				height = 0.85,
-				-- prompt_position = "top", -- typing at the top left
 			},
-			preview_cutoff = 0, -- force preview to show even if window is small
-			-- preview_width = 0.7, -- 60% preview pane on the right
-			-- width = 0.85,
-			-- height = 0.85,
+			preview_cutoff = 0,
 		},
+
 		sorting_strategy = "ascending",
-		path_display = { "smart", "shorten" },
 		prompt_prefix = " ",
-		selection_caret = " ",
+		selection_caret = "➤ ",
+		path_display = { "smart", "shorten" },
+
+		-- highlight the selected row
+		winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
 
 		prompt_title = "Search",
 		results_title = "Results List",
@@ -42,32 +41,38 @@ telescope.setup({
 			prompt_title = "file",
 			results_title = "",
 			preview_title = "",
+			path_display = { "absolute" }, -- only show full paths
 		},
+
 		live_grep = {
 			prompt_title = "grep",
 			results_title = "",
 			preview_title = "",
+			path_display = { "absolute" }, -- only file paths
 		},
+
 		buffers = {
 			prompt_title = "buffer",
 			results_title = "",
 			preview_title = "",
+			path_display = { "absolute" },
 		},
+
 		help_tags = {
 			prompt_title = "",
 			results_title = "",
 			preview_title = "",
+			path_display = { "absolute" },
 		},
 	},
 })
 
--- Load extensions if installed
+-- Extensions
 pcall(telescope.load_extension, "fzf")
 pcall(telescope.load_extension, "file_browser")
 
+-- CTRL + O → live grep with preview above
 vim.keymap.set("n", "<C-o>", function()
-	local builtin = require("telescope.builtin")
-
 	builtin.live_grep({
 		winblend = 10,
 		layout_strategy = "vertical",
@@ -83,5 +88,10 @@ vim.keymap.set("n", "<C-o>", function()
 		sorting_strategy = "ascending",
 		results_title = "",
 		preview_title = "",
+		path_display = { "absolute" }, -- only file paths
+
+		-- highlight selection
+		selection_caret = "➤ ",
+		-- winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
 	})
 end, { noremap = true, silent = true })
