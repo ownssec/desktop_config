@@ -5,8 +5,9 @@ if not ok then
 end
 
 -- Colors
-local fg_main = "#a6a6a6" -- light gray text
-local bg_main = "none" -- dark background
+local fg_main = "#a6a6a6"
+local bg_main = "none"
+local branch_color = "#b87786"
 
 -- Theme with background
 local themed = {
@@ -40,8 +41,9 @@ lualine.setup({
 			{
 				function()
 					local branch = vim.b.gitsigns_head
-					return (branch and branch ~= "") and ("**" .. branch .. "**") or ""
+					return (branch and branch ~= "") and ("" .. branch .. "") or ""
 				end,
+				color = { fg = branch_color },
 			},
 		},
 
