@@ -1,45 +1,66 @@
 -- lua/configs/lualine.lua
-
-local status, lualine = pcall(require, "lualine")
-if not status then
+local ok, lualine = pcall(require, "lualine")
+if not ok then
 	return
 end
+
+-- Colors
+local fg_main = "#a6a6a6" -- light gray text
+local bg_main = "none" -- dark background
+
+-- Theme with background
+local themed = {
+	a = { fg = fg_main, bg = bg_main },
+	b = { fg = fg_main, bg = bg_main },
+	c = { fg = fg_main, bg = bg_main },
+}
 
 lualine.setup({
 	options = {
 		icons_enabled = false,
 		theme = {
-			normal = { c = { fg = nil, bg = nil }, a = { fg = nil, bg = nil }, b = { fg = nil, bg = nil } },
-			insert = { c = { fg = nil, bg = nil }, a = { fg = nil, bg = nil }, b = { fg = nil, bg = nil } },
-			visual = { c = { fg = nil, bg = nil }, a = { fg = nil, bg = nil }, b = { fg = nil, bg = nil } },
-			replace = { c = { fg = nil, bg = nil }, a = { fg = nil, bg = nil }, b = { fg = nil, bg = nil } },
-			command = { c = { fg = nil, bg = nil }, a = { fg = nil, bg = nil }, b = { fg = nil, bg = nil } },
-			inactive = { c = { fg = nil, bg = nil }, a = { fg = nil, bg = nil }, b = { fg = nil, bg = nil } },
+			normal = themed,
+			insert = themed,
+			visual = themed,
+			replace = themed,
+			command = themed,
+			inactive = themed,
 		},
-		component_separators = " | ",
-		section_separators = { left = "", right = "" },
-		disabled_filetypes = {},
+		component_separators = "::",
+		section_separators = "",
 	},
+
 	sections = {
-		lualine_a = { { "mode" } },
-		lualine_b = { "filename", "branch", "location", "progress" },
-		lualine_c = { "" },
-		lualine_x = { "" },
-		lualine_y = { "filetype" },
-		lualine_z = { { "filename", separator = { right = " | " }, left_padding = 2 } },
-	},
-	inactive_sections = {
-		lualine_a = { "" },
-		lualine_b = { "" },
+		lualine_a = { "mode" },
+
+		lualine_b = {
+			"filename",
+			"location",
+			"progress",
+			{
+				function()
+					local branch = vim.b.gitsigns_head
+					return (branch and branch ~= "") and ("**" .. branch .. "**") or ""
+				end,
+			},
+		},
+
 		lualine_c = {},
 		lualine_x = {},
 		lualine_y = {},
-		lualine_z = { "" },
+		lualine_z = {},
 	},
-	tabline = {},
-	extensions = {},
+
+	inactive_sections = {
+		lualine_a = {},
+		lualine_b = {},
+		lualine_c = {},
+		lualine_x = {},
+		lualine_y = {},
+		lualine_z = {},
+	},
 })
 
--- OPTIONAL: Also make StatusLine fully transparent
-vim.api.nvim_set_hl(0, "StatusLine", { bg = "none", fg = "none" })
-vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "none", fg = "none" })
+-- Sync StatusLine highlight
+vim.api.nvim_set_hl(0, "StatusLine", { bg = bg_main, fg = fg_main })
+vim.api.nvim_set_hl(0, "StatusLineNC", { bg = bg_main, fg = fg_main })
