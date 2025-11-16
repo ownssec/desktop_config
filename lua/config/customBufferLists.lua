@@ -1,5 +1,5 @@
 -- bufferlist.lua
--- Floating buffer list with numeric selection (1–9), top padding, and gray border
+-- Floating buffer list with numeric selection (1–9), no padding, and floating window moved upward.
 
 local buffer_order = {}
 local float_win = nil
@@ -46,12 +46,19 @@ local function set_buffer_keymaps(buf)
 	vim.keymap.set("n", "<CR>", close_float, opts)
 end
 
--- Create floating window in the center
+-- Create floating window in the center but shifted upward
 local function open_floating_window(lines)
-	local width = 70
-	local height = math.min(#lines + 2, 20)
+	local width = 95
+
+	-- No padding below / above list
+	local height = math.min(#lines, 20)
+
 	local ui = vim.api.nvim_list_uis()[1]
-	local row = math.floor((ui.height - height) / 2)
+
+	-- Move window upward by X lines
+	local offset_up = 10.5 -- adjust higher/lower anytime
+
+	local row = math.max(0, math.floor((ui.height - height) / 2) - offset_up)
 	local col = math.floor((ui.width - width) / 2)
 
 	-- Create scratch buffer
@@ -59,10 +66,10 @@ local function open_floating_window(lines)
 	vim.api.nvim_buf_set_lines(float_buf, 0, -1, false, lines)
 
 	-- Create custom highlight group for gray border
-	vim.api.nvim_set_hl(0, "BufferListBorder", { fg = "#808080", bg = "NONE" }) -- gray border
-	vim.api.nvim_set_hl(0, "BufferListNormal", { bg = "NONE" }) -- transparent bg
+	vim.api.nvim_set_hl(0, "BufferListBorder", { fg = "#808080", bg = "NONE" })
+	vim.api.nvim_set_hl(0, "BufferListNormal", { bg = "NONE" })
 
-	-- Open floating window with custom highlights
+	-- Open floating window
 	local opts = {
 		style = "minimal",
 		relative = "editor",
@@ -127,7 +134,6 @@ vim.api.nvim_create_user_command("Buffer", function()
 
 	-- Collect display lines
 	local lines = {}
-	table.insert(lines, "") -- Padding line at top
 	for i, bufnr in ipairs(buffer_order) do
 		local bufinfo = vim.fn.getbufinfo(bufnr)[1]
 		local fullpath = bufinfo.name ~= "" and vim.fn.fnamemodify(bufinfo.name, ":p") or nil
