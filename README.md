@@ -2,7 +2,7 @@
 # for work and for daily use
 
 ----------------------------
----------- INPIRED BY ------
+-------not for nothing------
 ----------------------------
  
 - i just need a fast way to navigate things and back then i have a
