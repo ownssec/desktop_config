@@ -106,7 +106,7 @@ for_window [class=".*"] border pixel 3
 bindsym Control+$mod+equal exec flameshot gui
 
 #wallpaper
-exec_always --no-startup-id feh --bg-scale ~/Pictures/wpMain2.jpg
+exec_always --no-startup-id feh --bg-scale ~/Pictures/wpMain.jpg
 
 #move the container to right or left
 bindsym Control+$mod+Shift+h move left
@@ -179,7 +179,7 @@ set $text    #ECEFF1
 set $accent  #00BCD4
 
 # desktop widget
-exec_always --no-startup-id conky
+exec_always --no-startup-id pkill conky && conky
 
 # disable screen saver or inactive issue
 exec --no-startup-id xset -dpms
