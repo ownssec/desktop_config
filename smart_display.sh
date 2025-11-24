@@ -5,17 +5,22 @@
 # - Internal laptop monitor can have a manual Hz override
 # - ALL external monitors always get their highest possible Hz
 # - Forces mode + refresh to avoid Xorg/Picom/i3 ignoring refresh change
-# - Auto-extends layout to the right
+# - Choose between EXTEND mode and MIRROR mode
 
 # -----------------------------
-# 0. OPTIONAL MANUAL SETTINGS
+# 0. SETTINGS
 # -----------------------------
-# Set this ONLY if you want to force a fixed Hz for the laptop screen.
-# Leave empty "" to auto-detect the highest rate.
+# Force a fixed Hz for laptop panel (leave "" for auto)
 LAPTOP_MANUAL_RATE="48"
 
+# Choose display mode:
+# MIRROR_MODE=true  → Mirror all displays
+# MIRROR_MODE=false → Extend display to the right
+MIRROR_MODE=true
+
+
 # -----------------------------
-# 1. Detect internal laptop display (eDP-X) 
+# 1. Detect internal laptop display (eDP)
 # -----------------------------
 INTERNAL=$(xrandr | grep " connected" | grep -oP '^eDP-[0-9]+')
 if [ -z "$INTERNAL" ]; then
@@ -25,14 +30,16 @@ fi
 
 echo "Internal display detected: $INTERNAL"
 
+
 # -----------------------------
 # 2. List ALL connected monitors
 # -----------------------------
 MONITORS=($(xrandr | grep " connected" | awk '{print $1}'))
 echo "Detected monitors: ${MONITORS[@]}"
 
+
 # -----------------------------
-# 3. Function: get highest available refresh rate
+# 3. Get highest refresh rate
 # -----------------------------
 get_max_refresh() {
     local MON=$1
@@ -45,35 +52,55 @@ get_max_refresh() {
     echo "$RATE"
 }
 
+
 # -----------------------------
-# 4. Apply settings
+# 4. Build xrandr command
 # -----------------------------
 POSITIONED="$INTERNAL"
 COMMAND="xrandr"
 
 for MON in "${MONITORS[@]}"; do
-    # Auto-detect highest rate
     RATE=$(get_max_refresh "$MON")
 
-    # Manual override ONLY for laptop internal screen
+    # Manual override for laptop
     if [ "$MON" == "$INTERNAL" ] && [ -n "$LAPTOP_MANUAL_RATE" ]; then
-        echo "Manual override active: Laptop internal display → ${LAPTOP_MANUAL_RATE}Hz"
+        echo "Manual override: Laptop → ${LAPTOP_MANUAL_RATE}Hz"
         RATE="$LAPTOP_MANUAL_RATE"
     else
-        echo "Monitor $MON → auto-selected max rate: ${RATE}Hz"
+        echo "Monitor $MON → auto max refresh: ${RATE}Hz"
     fi
 
-    # FORCE mode + rate (fixes Xorg ignoring refresh changes)
+    # Always define internal monitor
     if [ "$MON" == "$INTERNAL" ]; then
         COMMAND+=" --output $MON --primary --mode 1920x1080 --rate $RATE"
-    else
-        COMMAND+=" --output $MON --mode 1920x1080 --rate $RATE --right-of $POSITIONED"
-        POSITIONED="$MON"
+        continue
     fi
+
+    # -----------------------------
+    # MIRROR MODE
+    # -----------------------------
+    if [ "$MIRROR_MODE" = true ]; then
+        echo "Mirroring $MON → $INTERNAL"
+        COMMAND+=" --output $MON --mode 1920x1080 --rate $RATE --same-as $INTERNAL"
+        continue
+    fi
+
+    # -----------------------------
+    # EXTEND MODE
+    # -----------------------------
+    echo "Extending $MON → right of $POSITIONED"
+    COMMAND+=" --output $MON --mode 1920x1080 --rate $RATE --right-of $POSITIONED"
+    POSITIONED="$MON"
 done
 
+
+# -----------------------------
+# 5. Execute final command
+# -----------------------------
+echo ""
 echo "Executing:"
 echo "$COMMAND"
+echo ""
 
 bash -c "$COMMAND"
 
