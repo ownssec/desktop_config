@@ -55,8 +55,8 @@ vim.keymap.set("n", "<C-o>", function()
 			anchor = "CENTER",
 
 			-- 🔒 FIX WINDOW SIZE (THIS MAKES POSITION STABLE)
-			width = 0.40, -- 60% of screen width
-			height = 0.50, -- 80% of screen height
+			width = 0.35, -- 60% of screen width
+			height = 0.35, -- 80% of screen height
 
 			-- 🔒 INTERNAL LAYOUT
 			vertical = {
