@@ -238,4 +238,10 @@ return require("packer").startup(function(use)
 	use("zbirenbaum/copilot.lua")
 	use("stevearc/dressing.nvim") -- for enhanced input UI
 	use("folke/snacks.nvim") -- for modern input UI
+
+	-- git
+
+	use({
+		"tpope/vim-fugitive",
+	})
 end)
