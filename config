@@ -155,7 +155,7 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 
 # Set gaps
-gaps inner 6
+gaps inner 3
 # gaps outer 6
 
 gaps top 4

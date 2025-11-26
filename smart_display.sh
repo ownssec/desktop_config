@@ -12,7 +12,7 @@
 # -----------------------------
 # Set this ONLY if you want to force a fixed Hz for the laptop screen.
 # Leave empty "" to auto-detect the highest rate.
-LAPTOP_MANUAL_RATE="48"
+LAPTOP_MANUAL_RATE="75"
 
 # -----------------------------
 # 1. Detect internal laptop display (eDP-X) 
