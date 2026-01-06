@@ -30,8 +30,8 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # kill focused window
-# bindsym $mod+Shift+q kill
-bindsym $mod+q kill
+bindsym $mod+Shift+q kill
+# bindsym $mod+q kill
 
 # start menu rofi (a program launcher)
 bindsym Ctrl+space exec rofi -show drun
@@ -177,8 +177,6 @@ set $text    #ECEFF1
 set $accent  #00BCD4
 
 exec_always --no-startup-id feh --bg-fill ~/Pictures/wpMain.jpg
-exec_always --no-startup-id pkill conky
-exec_always --no-startup-id sh -c "sleep 3 && conky"
 
 # disable screen saver or inactive issue
 exec --no-startup-id xset -dpms
