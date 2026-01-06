@@ -48,10 +48,10 @@ end
 
 -- Create floating window in the center but shifted upward
 local function open_floating_window(lines)
-	local width = 95
+	local width = 80
 
 	-- No padding below / above list
-	local height = math.min(#lines, 20)
+	local height = math.min(#lines, 15)
 
 	local ui = vim.api.nvim_list_uis()[1]
 
