@@ -251,8 +251,48 @@ return require("packer").startup(function(use)
 			"kristijanhusak/vim-dadbod-completion", -- Optional: for SQL autocompletion
 		},
 		config = function()
+			local custom_path = vim.fn.expand("~/Desktop/ghi/db_query")
+
+			-- 2. Create the directory if it doesn't exist
+			-- (This prevents the plugin from failing to save)
+			if vim.fn.isdirectory(custom_path) == 0 then
+				vim.fn.mkdir(custom_path, "p")
+			end
+
+			-- 3. Tell Dadbod-UI to use this path
+			vim.g.db_ui_save_location = custom_path
+
+			-- Recommended: Also store temporary buffer queries here
+			vim.g.db_ui_tmp_query_location = custom_path .. "/tmp"
+
+			-- 4. Fix for the E33 error (Search Register)
+			vim.cmd([[let @/ = 'dbui']])
+
+			-- 3. MongoDB specific: Set the default extension to .json or .js
+			-- if you are saving mongo queries
+			vim.g.db_ui_force_echo_notifications = 1
+
 			-- Your requested keymap
 			vim.keymap.set("n", "[db", "<cmd>DBUIToggle<cr>", { desc = "Toggle DB UI" })
+
+			-- 3. FileType specific mappings (The ]s fix)
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = { "dbui", "sql", "mysql", "plsql", "mongodb", "javascript" },
+				callback = function()
+					local opts = { buffer = true, remap = true }
+
+					-- Save the current buffer as a named query
+					vim.keymap.set("n", "]s", "<Plug>(DBUI_SaveQuery)", opts)
+
+					-- Your existing Vsplit mapping for the UI drawer
+					if vim.bo.filetype == "dbui" then
+						vim.keymap.set("n", "v", "<Plug>(DBUI_SelectLineVsplit)", opts)
+					end
+				end,
+			})
+
+			-- 4. Persistent E33 Fix (Prime the search register)
+			vim.fn.setreg("/", "dbui")
 
 			vim.g.db_ui_icons = {
 				saved_query = "*",
