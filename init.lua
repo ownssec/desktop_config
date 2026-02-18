@@ -48,3 +48,8 @@ vim.cmd([[
   hi Normal guibg=NONE ctermbg=NONE
   hi NormalNC guibg=NONE ctermbg=NONE
 ]])
+
+-- mongodb
+vim.g.dbs = {
+	portal_atlas = "mongodb+srv://admin101:admin101@portalproposaltest.9100stb.mongodb.net/test",
+}

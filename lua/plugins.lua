@@ -1,5 +1,4 @@
 -- -- lua/plugins.lua
-
 -- Automatically run: PackerCompile
 vim.api.nvim_create_autocmd("BufWritePost", {
 	group = vim.api.nvim_create_augroup("PACKER", { clear = true }),
@@ -243,5 +242,39 @@ return require("packer").startup(function(use)
 
 	use({
 		"tpope/vim-fugitive",
+	})
+
+	use({
+		"kristijanhusak/vim-dadbod-ui",
+		requires = {
+			"tpope/vim-dadbod",
+			"kristijanhusak/vim-dadbod-completion", -- Optional: for SQL autocompletion
+		},
+		config = function()
+			-- Your requested keymap
+			vim.keymap.set("n", "[db", "<cmd>DBUIToggle<cr>", { desc = "Toggle DB UI" })
+
+			vim.g.db_ui_icons = {
+				saved_query = "*",
+				new_query = "+",
+				tables = "~",
+				buffers = "»",
+				expanded = "+",
+				collapsed = "-",
+				connection_ok = "✓",
+				connection_error = "✕",
+			}
+
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "dbui",
+				callback = function()
+					-- remap = true is required for <Plug> mappings to work
+					vim.keymap.set("n", "v", "<Plug>(DBUI_SelectLineVsplit)", { buffer = true, remap = true })
+				end,
+			})
+
+			-- Optional: Prevent the UI from auto-opening on startup
+			vim.g.db_ui_show_help = 0
+		end,
 	})
 end)
