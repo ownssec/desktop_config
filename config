@@ -30,8 +30,8 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # kill focused window
-# bindsym $mod+Shift+q kill
-bindsym $mod+q kill
+bindsym $mod+Shift+q kill
+# bindsym $mod+q kill
 
 # start menu rofi (a program launcher)
 bindsym Ctrl+space exec rofi -show drun
@@ -105,8 +105,6 @@ for_window [class=".*"] border pixel 3
 
 bindsym Control+$mod+equal exec flameshot gui
 
-#wallpaper
-exec_always --no-startup-id feh --bg-scale ~/Pictures/wpMain2.jpg
 
 #move the container to right or left
 bindsym Control+$mod+Shift+h move left
@@ -157,7 +155,7 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 
 # Set gaps
-gaps inner 6
+gaps inner 3
 # gaps outer 6
 
 gaps top 4
@@ -178,8 +176,7 @@ set $inactive #37474F
 set $text    #ECEFF1
 set $accent  #00BCD4
 
-# desktop widget
-exec_always --no-startup-id conky
+exec_always --no-startup-id feh --bg-fill ~/Pictures/wpMain.jpg
 
 # disable screen saver or inactive issue
 exec --no-startup-id xset -dpms

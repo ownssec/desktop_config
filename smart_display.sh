@@ -10,8 +10,9 @@
 # -----------------------------
 # 0. SETTINGS
 # -----------------------------
-# Force a fixed Hz for laptop panel (leave "" for auto)
-LAPTOP_MANUAL_RATE="48"
+# Set this ONLY if you want to force a fixed Hz for the laptop screen.
+# Leave empty "" to auto-detect the highest rate.
+LAPTOP_MANUAL_RATE="75"
 
 # Choose display mode:
 # MIRROR_MODE=true  → Mirror all displays
