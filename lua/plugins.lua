@@ -135,7 +135,7 @@ return require("packer").startup(function(use)
 	})
 
 	use({
-		"ggandor/leap.nvim",
+		url = "https://codeberg.org/andyg/leap.nvim",
 		config = function()
 			require("config.leap")
 		end,
@@ -169,12 +169,12 @@ return require("packer").startup(function(use)
 	})
 
 	-- Cursor Enhancements
-	use({
-		"sphamba/smear-cursor.nvim",
-		config = function()
-			require("config.smearCursor")
-		end,
-	})
+	-- use({
+	-- 	"sphamba/smear-cursor.nvim",
+	-- 	config = function()
+	-- 		require("config.smearCursor")
+	-- 	end,
+	-- })
 
 	-- Formatters
 	use({
