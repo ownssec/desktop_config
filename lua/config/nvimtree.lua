@@ -13,7 +13,7 @@ local function my_on_attach(bufnr)
     end
     api.config.mappings.default_on_attach(bufnr)
 
-    vim.keymap.set("n", "f", api.tree.toggle_help, opts("Toggle Help"))
+    -- vim.keymap.set("n", "f", api.tree.toggle_help, opts("Toggle Help"))
     vim.keymap.set("n", "<C-e>", api.tree.close, opts("Close Tree"))
 end
 

@@ -48,11 +48,8 @@ return require("packer").startup(function(use)
 	use("onsails/lspkind-nvim")
 
     -- Syntax and Language Support
-    use({
+     use({
       "nvim-treesitter/nvim-treesitter",
-      run = function()
-        require("nvim-treesitter.install").update({ with_sync = true })
-      end,
       config = function()
         require("config.treesitter")
       end,
@@ -136,11 +133,22 @@ return require("packer").startup(function(use)
 	})
 
 	use({
-		url = "https://codeberg.org/andyg/leap.nvim",
-		config = function()
-			require("config.leap")
-		end,
-	})
+        "https://codeberg.org/andyg/leap.nvim",
+        config = function()
+            local leap = require("leap")
+            -- Set highlights
+            vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
+            -- Default mappings are deprecated — manually set them instead:
+            leap.opts.safe_labels = {} -- Optional: disables auto labels if you want a minimalist look
+            leap.opts.highlight_unlabeled_phase_one_targets = true
+            -- Forward leap
+            vim.keymap.set({'n', 'x', 'o'}, 'f', '<Plug>(leap)')
+            -- Backward leap
+            vim.keymap.set({ "n", "x", "o" }, "F", function()
+                leap.leap({ backwjrd = true, target_windows = { vim.api.nvim_get_current_win() } })
+            end)
+        end,
+    })
 
 	use({
 		"andrewferrier/debugprint.nvim",
@@ -219,10 +227,9 @@ return require("packer").startup(function(use)
 	})
 
 	--fuzzy finder
-
 	use({
 		"nvim-telescope/telescope.nvim",
-		tag = "0.1.6",
+	    branch = "master",
 		requires = { { "nvim-lua/plenary.nvim" } },
 		config = function()
 			require("config.telescope")

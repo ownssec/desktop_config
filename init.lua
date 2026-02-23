@@ -53,3 +53,11 @@ vim.cmd([[
 vim.g.dbs = {
 	portal_atlas = "mongodb+srv://admin101:admin101@portalproposaltest.9100stb.mongodb.net/test",
 }
+
+-- http kulala
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "kulala_http",
+  callback = function()
+    vim.bo.filetype = "http"
+  end,
+})

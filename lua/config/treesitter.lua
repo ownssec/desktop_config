@@ -4,6 +4,7 @@ if not ok then
   return
 end
 
+
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = false
@@ -28,6 +29,8 @@ configs.setup({
     "bash",
     "regex",
   },
+
+  ignore_install = { "kulala_http" },
 
   sync_install = true,
   auto_install = true,
