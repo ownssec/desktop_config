@@ -1,0 +1,8 @@
+# Ignore packer plugin manager itself
+/.local/share/nvim/site/pack/packer/start/packer.nvim/
+
+# Ignore all other installed plugins (optional)
+pack/
+
+# Ignore compiled packer file
+/plugin/packer_compiled.lua
