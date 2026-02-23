@@ -8,7 +8,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 
 return require("packer").startup(function(use)
 	-- Package Manager
-	use("wbthomason/packer.nvim")
+    use("wbthomason/packer.nvim")
 
 	-- Core Utilities
 	use("nvim-lua/plenary.nvim")
