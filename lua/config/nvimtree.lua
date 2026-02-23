@@ -3,19 +3,18 @@ if not status then
 	return
 end
 
+vim.keymap.set("n", "<C-e>", ":NvimTreeToggle<CR>", { noremap = true, silent = true, desc = "Toggle NvimTree" })
+
 local function my_on_attach(bufnr)
-	local api = require("nvim-tree.api")
+    local api = require("nvim-tree.api")
 
-	local function opts(desc)
-		return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-	end
+    local function opts(desc)
+        return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+    api.config.mappings.default_on_attach(bufnr)
 
-	-- Set default mappings from nvim-tree
-	api.config.mappings.default_on_attach(bufnr)
-
-	-- Custom key mappings
-	vim.keymap.set("n", "<C-e>", api.tree.toggle, opts("Toggle Tree"))
-	vim.keymap.set("n", "f", api.tree.toggle_help, opts("Toggle Help"))
+    vim.keymap.set("n", "f", api.tree.toggle_help, opts("Toggle Help"))
+    vim.keymap.set("n", "<C-e>", api.tree.close, opts("Close Tree"))
 end
 
 require("nvim-tree").setup({
