@@ -1,5 +1,9 @@
 -- Your existing Neovim config
 
+vim.g.db_ui_use_vertical_split = 1
+-- Global Neovim setting to prefer right-side splits
+vim.opt.splitright = true
+
 require("plugins")
 require("settings")
 require("keymap")
@@ -50,9 +54,9 @@ vim.cmd([[
 ]])
 
 -- mongodb
-vim.g.dbs = {
-	portal_atlas = "mongodb+srv://admin101:admin101@portalproposaltest.9100stb.mongodb.net/test",
-}
+-- vim.g.dbs = {
+--     portal_atlas = "mongodb+srv://admin101:admin101@portalproposaltest.9100stb.mongodb.net/test",
+-- }
 
 -- http kulala
 vim.api.nvim_create_autocmd("FileType", {
@@ -61,3 +65,23 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.filetype = "http"
   end,
 })
+
+-- windows config
+-- Sync clipboard between OS and Neovim.
+vim.opt.clipboard = "unnamedplus"
+-- WSL clipboard integration that automatically removes Windows ^M characters
+if vim.fn.has("wsl") == 1 then
+    vim.g.clipboard = {
+        name = "WslClipboard",
+        copy = {
+            ["+"] = "clip.exe",
+            ["*"] = "clip.exe",
+        },
+        paste = {
+            -- Uses PowerShell to grab clipboard and instantly strip the \r (carriage return)
+            ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+            ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        },
+        cache_enabled = 0,
+    }
+end

@@ -64,3 +64,6 @@ pip3 install neovim-remote
 pipx ensurepath
 pipx install pynvim
 sudo apt install python3-pynvim
+
+-- dadbog nvim
+npm install -g mongosh
