@@ -54,9 +54,9 @@ vim.cmd([[
 ]])
 
 -- mongodb
--- vim.g.dbs = {
---     portal_atlas = "mongodb+srv://admin101:admin101@portalproposaltest.9100stb.mongodb.net/test",
--- }
+vim.g.dbs = {
+    portal_atlas = "mongodb+srv://admin101:admin101@portalproposaltest.9100stb.mongodb.net/test",
+}
 
 -- http kulala
 vim.api.nvim_create_autocmd("FileType", {
