@@ -68,3 +68,18 @@ vim.opt.cmdheight = 0
 -- dont save logs
 vim.lsp.set_log_level("OFF")
 vim.env.VIM_LOG_LEVEL = "OFF"
+
+
+-- Disable folding globally
+vim.opt.foldenable = false
+-- Hide the fold column (the vertical bar on the left)
+vim.opt.foldcolumn = "0"
+-- Ensure all folds are open by default (if they are ever created)
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+-- Set method to manual so no folds are created automatically
+vim.opt.foldmethod = "manual"
+
+-- Force bold on all function-related Treesitter groups for JavaScript
+vim.api.nvim_set_hl(0, "@function.method", { bold = true })
+vim.api.nvim_set_hl(0, "@function.call", { bold = true })

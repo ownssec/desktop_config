@@ -197,6 +197,9 @@ return require("packer").startup(function(use)
 		"mistweaverco/kulala.nvim",
 		config = function()
 			require("config.kulala")
+            vim.opt_local.foldenable = false
+            vim.opt_local.foldmethod = "manual"
+            vim.opt_local.foldlevel = 99
 		end,
 	})
 
@@ -222,7 +225,7 @@ return require("packer").startup(function(use)
 		"kylechui/nvim-surround",
 		tag = "*", -- Use for stability; omit to use `main` branch for the latest features
 		config = function()
-			require("nvim-surround").setup({})
+        require("nvim-surround").setup({})
 		end,
 	})
 
@@ -251,5 +254,46 @@ return require("packer").startup(function(use)
 	use({
 		"tpope/vim-fugitive",
 	})
+
+    -- use({
+    --   'kopecmaciej/vi-mongo.nvim',
+    --   config = function()
+    --     require('vi-mongo').setup({
+    --       persist = true
+    --     })
+    --
+    --     -- Function to find the vi-mongo window and close it, or open it if it doesn't exist
+    --     local function toggle_vi_mongo()
+    --       local found_win = nil
+    --       
+    --       -- 1. Check all open windows for the one running vi-mongo
+    --       for _, win in ipairs(vim.api.nvim_list_wins()) do
+    --         local buf = vim.api.nvim_win_get_buf(win)
+    --         local name = vim.api.nvim_buf_get_name(buf)
+    --         if name:match("vi%-mongo") then
+    --           found_win = win
+    --           break
+    --         end
+    --       end
+    --
+    --       -- 2. If window exists, close it. Otherwise, open a new one.
+    --       if found_win then
+    --         -- 'true' forces the close even if there are unsaved changes (standard for terminals)
+    --         vim.api.nvim_win_close(found_win, true)
+    --       else
+    --         vim.cmd("ViMongo")
+    --       end
+    --     end
+    --
+    --     -- Map ]v in Normal mode
+    --     vim.keymap.set('n', ']]v', toggle_vi_mongo, { noremap = true, silent = true })
+    --
+    --     -- Map ]v in Terminal mode (so it works while you are inside the Mongo UI)
+    --     -- We use <C-\><C-n> to escape terminal mode before running the function
+    --     vim.keymap.set('t', ']v', function()
+    --       toggle_vi_mongo()
+    --     end, { noremap = true, silent = true })
+    --   end
+    -- })
 
 end)

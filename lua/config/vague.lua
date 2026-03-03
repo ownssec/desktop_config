@@ -20,7 +20,7 @@ require("vague").setup({
 		keywords_label = "none",
 		keywords_exception = "none",
 		builtin_constants = "bold",
-		builtin_functions = "none",
+		builtin_functions = "bold",
 		builtin_types = "bold",
 		builtin_variables = "none",
 	},
