@@ -4,7 +4,7 @@
 # command : ip link show
 LAN_IF="enp9s0"
 WIFI_IF="wlp0s20f3"
-ICON="net"     # You want to use only this icon
+ICON="%{F#fba922}net%{F-}"
 # ICON=""     # You want to use only this icon
 DEFAULT_OUTPUT="$ICON 0KB/s"
 
