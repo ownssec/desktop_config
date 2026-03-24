@@ -55,15 +55,15 @@ vim.cmd([[
 
 -- mongodb
 vim.g.dbs = {
-    portal_atlas = "mongodb+srv://admin101:admin101@portalproposaltest.9100stb.mongodb.net/test",
+	portal_atlas = "mongodb+srv://admin101:admin101@portalproposaltest.9100stb.mongodb.net/test",
 }
 
 -- http kulala
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "kulala_http",
-  callback = function()
-    vim.bo.filetype = "http"
-  end,
+	pattern = "kulala_http",
+	callback = function()
+		vim.bo.filetype = "http"
+	end,
 })
 
 -- windows config
@@ -71,17 +71,17 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.opt.clipboard = "unnamedplus"
 -- WSL clipboard integration that automatically removes Windows ^M characters
 if vim.fn.has("wsl") == 1 then
-    vim.g.clipboard = {
-        name = "WslClipboard",
-        copy = {
-            ["+"] = "clip.exe",
-            ["*"] = "clip.exe",
-        },
-        paste = {
-            -- Uses PowerShell to grab clipboard and instantly strip the \r (carriage return)
-            ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-            ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-        },
-        cache_enabled = 0,
-    }
+	vim.g.clipboard = {
+		name = "WslClipboard",
+		copy = {
+			["+"] = "clip.exe",
+			["*"] = "clip.exe",
+		},
+		paste = {
+			-- Uses PowerShell to grab clipboard and instantly strip the \r (carriage return)
+			["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+			["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+		},
+		cache_enabled = 0,
+	}
 end
