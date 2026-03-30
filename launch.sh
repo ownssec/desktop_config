@@ -8,8 +8,8 @@ export MONITOR=$(xrandr --query | grep " connected primary" | cut -d" " -f1)
 [ -z "$MONITOR" ] && export MONITOR=$(xrandr --query | grep " connected" | head -n1 | cut -d" " -f1)
 
 # Launch (Removing the dots after disown)
-polybar topPanel --config="$HOME/.config/polybar/config.ini" &
+polybar config --config="$HOME/.config/polybar/config.ini" &
 sleep 0.5
-polybar bottomPanel --config="$HOME/.config/polybar/configPanelBottom.ini" &
+# polybar bottomPanel --config="$HOME/.config/polybar/configPanelBottom.ini" &
 
 disown
