@@ -3,10 +3,6 @@ local leap = require("leap")
 -- Set highlights
 vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
 
--- Default mappings are deprecated — manually set them instead:
-leap.opts.safe_labels = {} -- Optional: disables auto labels if you want a minimalist look
-leap.opts.highlight_unlabeled_phase_one_targets = true
-
 vim.keymap.set({ "n", "x", "o" }, "f", function()
 	leap.leap({ target_windows = { vim.api.nvim_get_current_win() } })
 end)

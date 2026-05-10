@@ -135,20 +135,70 @@ return require("packer").startup(function(use)
 	use({
 		"https://codeberg.org/andyg/leap.nvim",
 		config = function()
-			local leap = require("leap")
-			-- Set highlights
+			local ok, leap = pcall(require, "leap")
+			if not ok then
+				return
+			end
+
+			-- IMPORTANT:
+			-- Do NOT use this removed option:
+			-- leap.opts.highlight_unlabeled_phase_one_targets = true
+			--
+			-- Do NOT use:
+			-- leap.opts.safe_labels = {}
+
+			-- Replacement for the removed option
+			leap.opts.on_beacons = function(targets)
+				for _, t in ipairs(targets) do
+					if not t.label and not t.beacon and t.chars and t.is_previewable ~= false then
+						t.beacon = {
+							0,
+							{
+								virt_text = {
+									{ table.concat(t.chars), "LeapMatch" },
+								},
+							},
+						}
+					end
+				end
+			end
+
+			-- Optional highlight
 			vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
-			-- Default mappings are deprecated — manually set them instead:
-			leap.opts.safe_labels = {} -- Optional: disables auto labels if you want a minimalist look
-			leap.opts.highlight_unlabeled_phase_one_targets = true
-			-- Forward leap
-			vim.keymap.set({ "n", "x", "o" }, "f", "<Plug>(leap)")
-			-- Backward leap
+
+			-- Keymaps
+			vim.keymap.set({ "n", "x", "o" }, "f", "<Plug>(leap)", { silent = true })
+
 			vim.keymap.set({ "n", "x", "o" }, "F", function()
-				leap.leap({ backwjrd = true, target_windows = { vim.api.nvim_get_current_win() } })
-			end)
+				leap.leap({
+					backward = true,
+					target_windows = { vim.api.nvim_get_current_win() },
+				})
+			end, { silent = true })
 		end,
 	})
+
+	-- use({
+	-- 	"https://codeberg.org/andyg/leap.nvim",
+	-- 	config = function()
+	-- 		local leap = require("leap")
+	--
+	-- 		-- Set highlights
+	-- 		vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
+	--
+	-- 		-- Options
+	-- 		leap.opts.safe_labels = {}
+	-- 		leap.opts.highlight_unlabeled_phase_one_targets = true
+	--
+	-- 		-- Forward leap
+	-- 		vim.keymap.set({ "n", "x", "o" }, "f", "<Plug>(leap)")
+	--
+	-- 		-- Backward leap (Fixed typo: backward)
+	-- 		vim.keymap.set({ "n", "x", "o" }, "F", function()
+	-- 			leap.leap({ backward = true, target_windows = { vim.api.nvim_get_current_win() } })
+	-- 		end)
+	-- 	end,
+	-- })
 
 	use({
 		"andrewferrier/debugprint.nvim",
@@ -288,22 +338,6 @@ return require("packer").startup(function(use)
 	})
 
 	-- use({
-	-- 	"debsishu/floatodo.nvim",
-	-- 	config = function()
-	-- 		require("floatodo").setup({
-	-- 			path = "~/todo.md",
-	-- 			width_percent = 0.8,
-	-- 			height_percent = 0.8,
-	-- 			insert_on_open = true,
-	-- 		})
-	--
-	-- 		vim.keymap.set("n", "[ltd", function()
-	-- 			require("floatodo").floatodo_toggle()
-	-- 		end, { desc = "Toggle Floating TODO" })
-	-- 	end,
-	-- })
-
-	-- use({
 	--   'kopecmaciej/vi-mongo.nvim',
 	--   config = function()
 	--     require('vi-mongo').setup({
@@ -344,4 +378,36 @@ return require("packer").startup(function(use)
 	--     end, { noremap = true, silent = true })
 	--   end
 	-- })
+
+	-- SQL / Database plugins
+	use({ "tpope/vim-dadbod" })
+
+	use({
+		"kristijanhusak/vim-dadbod-ui",
+		requires = { "tpope/vim-dadbod" },
+		config = function()
+			-- Optional nice settings
+			vim.g.db_ui_use_nerd_fonts = 1
+			vim.g.db_ui_win_position = "left"
+			vim.g.db_ui_winwidth = 40
+			vim.g.db_ui_save_location = "~/queries" -- where saved queries go
+			vim.g.db_ui_show_help = 0
+
+			-- ========================
+			-- Auto-load your MySQL connection
+			-- ========================
+			vim.g.dbs = {
+				dev = "mysql://root:admin@localhost:3306/schoolDB",
+				-- You can add more connections:
+				-- prod = "mysql://user:pass@192.168.1.100:3306/prod_db",
+			}
+		end,
+	})
+
+	-- Optional: Autocompletion for SQL
+	use({
+		"kristijanhusak/vim-dadbod-completion",
+		requires = { "tpope/vim-dadbod" },
+		ft = { "sql", "mysql", "plsql" },
+	})
 end)
