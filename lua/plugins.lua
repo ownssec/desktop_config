@@ -22,28 +22,116 @@ return require("packer").startup(function(use)
 		end,
 	})
 
+	-- Mason LSP Bridge
 	use({
-		"hrsh7th/nvim-cmp",
-		requires = {
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"L3MON4D3/LuaSnip",
-			"saadparwaiz1/cmp_luasnip",
-		},
-		opt = false,
+		"williamboman/mason-lspconfig.nvim",
+		after = "mason.nvim",
 		config = function()
-			require("config.cmpconf")
+			require("mason-lspconfig").setup({
+				ensure_installed = {
+					"lua_ls",
+					"ts_ls", -- TypeScript/JavaScript + React
+					"html",
+					"cssls",
+					"tailwindcss",
+					"eslint",
+					"intelephense", -- PHP
+				},
+				automatic_installation = true,
+			})
 		end,
 	})
 
+	-- blink.cmp v1
 	use({
-		"neovim/nvim-lspconfig",
-		after = "nvim-cmp",
+		"saghen/blink.cmp",
+		tag = "v1.*",
+		requires = { "rafamadriz/friendly-snippets" },
 		config = function()
-			require("config.lsp")
+			require("blink.cmp").setup({
+				keymap = { preset = "super-tab" },
+
+				appearance = {
+					nerd_font_variant = "mono",
+					use_nvim_cmp_as_default = true,
+				},
+
+				completion = {
+					documentation = { auto_show = false },
+				},
+
+				sources = {
+					default = { "lsp", "path", "snippets", "buffer" },
+				},
+
+				fuzzy = { implementation = "rust" },
+			})
+
+			-- Brighter completion menu colors
+			vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = "#1e1e2e" }) -- background
+			vim.api.nvim_set_hl(0, "BlinkCmpMenuSelection", { bg = "#45475a", fg = "#cdd6f4" }) -- selected item
+			vim.api.nvim_set_hl(0, "BlinkCmpLabel", { fg = "#9c9992" }) -- main text
+			vim.api.nvim_set_hl(0, "BlinkCmpLabelMatch", { fg = "#9c9992", bold = true }) -- matched letters
+			vim.api.nvim_set_hl(0, "BlinkCmpKind", { fg = "#977C71" }) -- icons (functions, variables, etc.)
 		end,
 	})
+
+	-- LSP Config (nvim-lspconfig)
+	use({
+		"neovim/nvim-lspconfig",
+		after = { "blink.cmp", "mason-lspconfig.nvim" },
+		config = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+			-- Setup servers with capabilities
+			local servers = { "lua_ls", "ts_ls", "html", "cssls", "tailwindcss", "eslint", "intelephense" }
+
+			for _, server in ipairs(servers) do
+				require("lspconfig")[server].setup({
+					capabilities = capabilities,
+				})
+			end
+
+			-- Custom settings for lua_ls
+			require("lspconfig").lua_ls.setup({
+				capabilities = capabilities,
+				settings = {
+					Lua = {
+						diagnostics = { globals = { "vim" } },
+					},
+				},
+			})
+
+			-- TailwindCSS custom config (for React/TSX)
+			require("lspconfig").tailwindcss.setup({
+				capabilities = capabilities,
+				filetypes = {
+					"html",
+					"css",
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"tsx",
+				},
+			})
+		end,
+	})
+
+	-- use({
+	-- 	"hrsh7th/nvim-cmp",
+	-- 	requires = {
+	-- 		"hrsh7th/cmp-nvim-lsp",
+	-- 		"hrsh7th/cmp-buffer",
+	-- 		"hrsh7th/cmp-path",
+	-- 		"L3MON4D3/LuaSnip",
+	-- 		"saadparwaiz1/cmp_luasnip",
+	-- 	},
+	-- 	opt = false,
+	-- 	config = function()
+	-- 		require("config.cmpconf")
+	-- 	end,
+	-- })
 
 	use("onsails/lspkind-nvim")
 
