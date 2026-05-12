@@ -118,23 +118,6 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	-- use({
-	-- 	"hrsh7th/nvim-cmp",
-	-- 	requires = {
-	-- 		"hrsh7th/cmp-nvim-lsp",
-	-- 		"hrsh7th/cmp-buffer",
-	-- 		"hrsh7th/cmp-path",
-	-- 		"L3MON4D3/LuaSnip",
-	-- 		"saadparwaiz1/cmp_luasnip",
-	-- 	},
-	-- 	opt = false,
-	-- 	config = function()
-	-- 		require("config.cmpconf")
-	-- 	end,
-	-- })
-
-	use("onsails/lspkind-nvim")
-
 	-- Syntax and Language Support
 	use({
 		"nvim-treesitter/nvim-treesitter",
@@ -145,7 +128,7 @@ return require("packer").startup(function(use)
 
 	use({
 		"windwp/nvim-ts-autotag",
-		ft = { "html", "javascriptreact", "typescriptreact", "javascript", "typescript", "tsx" },
+		ft = { "html", "javascriptreact", "typescriptreact", "javascript", "typescript", "tsx", "php" },
 		config = function()
 			require("nvim-ts-autotag").setup({
 				filetypes = { "html", "javascript", "jsx", "typescript", "tsx", "php" },
@@ -158,20 +141,9 @@ return require("packer").startup(function(use)
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		config = function()
-			require("nvim-autopairs").setup({})
-		end,
-	})
-
-	use({
-		"altermo/ultimate-autopair.nvim",
-		event = { "InsertEnter", "CmdlineEnter" },
-		branch = "v0.6",
-		config = function()
-			require("ultimate-autopair").setup({
-				enabled = function()
-					local ft = vim.bo.filetype
-					return ft == "http" or ft == "json"
-				end,
+			require("nvim-autopairs").setup({
+				check_ts = true,
+				enable_check_bracket_line = true,
 			})
 		end,
 	})
@@ -266,28 +238,6 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	-- use({
-	-- 	"https://codeberg.org/andyg/leap.nvim",
-	-- 	config = function()
-	-- 		local leap = require("leap")
-	--
-	-- 		-- Set highlights
-	-- 		vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
-	--
-	-- 		-- Options
-	-- 		leap.opts.safe_labels = {}
-	-- 		leap.opts.highlight_unlabeled_phase_one_targets = true
-	--
-	-- 		-- Forward leap
-	-- 		vim.keymap.set({ "n", "x", "o" }, "f", "<Plug>(leap)")
-	--
-	-- 		-- Backward leap (Fixed typo: backward)
-	-- 		vim.keymap.set({ "n", "x", "o" }, "F", function()
-	-- 			leap.leap({ backward = true, target_windows = { vim.api.nvim_get_current_win() } })
-	-- 		end)
-	-- 	end,
-	-- })
-
 	use({
 		"andrewferrier/debugprint.nvim",
 		config = function()
@@ -342,10 +292,26 @@ return require("packer").startup(function(use)
 	})
 
 	-- comment
+	use("JoosepAlviste/nvim-ts-context-commentstring")
+
 	use({
 		"numToStr/Comment.nvim",
 		config = function()
-			require("Comment").setup()
+			vim.defer_fn(function()
+				require("ts_context_commentstring").setup({
+					enable_autocmd = false,
+				})
+
+				require("Comment").setup({
+					padding = true,
+					sticky = true,
+
+					toggler = { line = "gcc", block = "gbc" },
+					opleader = { line = "gc", block = "gb" },
+
+					pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+				})
+			end, 100)
 		end,
 	})
 
@@ -425,48 +391,6 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	-- use({
-	--   'kopecmaciej/vi-mongo.nvim',
-	--   config = function()
-	--     require('vi-mongo').setup({
-	--       persist = true
-	--     })
-	--
-	--     -- Function to find the vi-mongo window and close it, or open it if it doesn't exist
-	--     local function toggle_vi_mongo()
-	--       local found_win = nil
-	--
-	--       -- 1. Check all open windows for the one running vi-mongo
-	--       for _, win in ipairs(vim.api.nvim_list_wins()) do
-	--         local buf = vim.api.nvim_win_get_buf(win)
-	--         local name = vim.api.nvim_buf_get_name(buf)
-	--         if name:match("vi%-mongo") then
-	--           found_win = win
-	--           break
-	--         end
-	--       end
-	--
-	--       -- 2. If window exists, close it. Otherwise, open a new one.
-	--       if found_win then
-	--         -- 'true' forces the close even if there are unsaved changes (standard for terminals)
-	--         vim.api.nvim_win_close(found_win, true)
-	--       else
-	--         vim.cmd("ViMongo")
-	--       end
-	--     end
-	--
-	--     -- Map ]v in Normal mode
-	--     vim.keymap.set('n', ']]v', toggle_vi_mongo, { noremap = true, silent = true })
-	--
-	--     -- Map ]v in Terminal mode (so it works while you are inside the Mongo UI)
-	--     -- We use <C-\><C-n> to escape terminal mode before running the function
-	--
-	--     vim.keymap.set('t', ']v', function()
-	--       toggle_vi_mongo()
-	--     end, { noremap = true, silent = true })
-	--   end
-	-- })
-
 	-- SQL / Database plugins
 	use({ "tpope/vim-dadbod" })
 
@@ -478,16 +402,11 @@ return require("packer").startup(function(use)
 			vim.g.db_ui_use_nerd_fonts = 1
 			vim.g.db_ui_win_position = "left"
 			vim.g.db_ui_winwidth = 40
-			vim.g.db_ui_save_location = "~/queries" -- where saved queries go
+			vim.g.db_ui_save_location = "~/queries"
 			vim.g.db_ui_show_help = 0
 
-			-- ========================
-			-- Auto-load your MySQL connection
-			-- ========================
 			vim.g.dbs = {
 				dev = "mysql://root:admin@localhost:3306/schoolDB",
-				-- You can add more connections:
-				-- prod = "mysql://user:pass@192.168.1.100:3306/prod_db",
 			}
 		end,
 	})
