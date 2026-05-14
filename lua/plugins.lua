@@ -60,6 +60,13 @@ return require("packer").startup(function(use)
 		end,
 	})
 
+	use({
+		"L3MON4D3/LuaSnip",
+		requires = {
+			"rafamadriz/friendly-snippets",
+		},
+	})
+
 	-- LSP Config (nvim-lspconfig)
 	use({
 		"neovim/nvim-lspconfig",
